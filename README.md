@@ -25,7 +25,7 @@ Instead of trying to inject more vehicles into an already choked city, the ultim
 
 Through historical data analysis, we discovered that **over 60% of urban commuters possess latent flexibility**. By quantifying a user's willingness to adapt, we can predict and calculate a dynamic **Adaptability Score**:
 
-$$adaptability\_score = (0.4 \times pool\_acceptance + 0.3 \times pickup\_flexibility + 0.3 \times fare\_sensitivity) \times 100$$
+$$adaptabilityScore = (0.4 \times poolAcceptance + 0.3 \times pickupFlexibility + 0.3 \times fareSensitivity) \times 100$$
 
 By identifying and targeting these flexible segments (**Budget Savers**, **Eco Conscious**, **Convenience Seekers**), the city can proactively re-route and balance its own transportation load.
 
