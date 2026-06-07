@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 st.set_page_config(
     page_title="Balanceflow AI - Home", 
@@ -36,7 +37,7 @@ st.markdown("""
 # 📊 PHẦN 2: EXECUTIVE SUMMARY & CURRENT MONITOR
 st.markdown('<div class="section-header">📈 Executive Summary: Live Status & System Impact</div>', unsafe_allow_html=True)
 
-# Hàng 1: Trạng thái cảnh báo thực tế
+# Hàng 1: Trạng thái cảnh báo thực tế nguyên bản của dự án
 col_live1, col_live2 = st.columns(2)
 with col_live1:
     st.markdown("### 📊 Main KPI")
@@ -52,7 +53,7 @@ with col_live2:
 
 st.write("")
 
-# Hàng 2: Biến đổi 2 biểu đồ trực quan thể hiện rõ kết quả vai trò Data Analyst
+# Hàng 2: Khu vực chứa 2 biểu đồ Plotly cao cấp
 chart_col1, chart_col2 = st.columns(2)
 
 with chart_col1:
@@ -65,32 +66,110 @@ with chart_col1:
         'Timeline': time_timeline,
         'Without Intervention (Reactive)': reactive_risk,
         'With Balanceflow AI (Proactive)': proactive_risk
-    }).set_index('Timeline')
-    st.line_chart(df_risk, color=["#FF4B4B", "#2EA043"])
+    })
+    
+    fig_risk = px.line(
+        df_risk, 
+        x='Timeline', 
+        y=['Without Intervention (Reactive)', 'With Balanceflow AI (Proactive)'],
+        color_discrete_sequence=["#FF4B4B", "#2EA043"]
+    )
+    fig_risk.update_layout(
+        legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
+        margin=dict(l=20, r=20, t=10, b=50),
+        xaxis_title=None,
+        yaxis_title="Risk Index (%)"
+    )
+    st.plotly_chart(fig_risk, use_container_width=True)
 
 with chart_col2:
     st.subheader("🚖 Fleet Efficiency Optimization (Impact)")
-    # Thay đổi cấu trúc DataFrame để vẽ biểu đồ ngang, tránh lỗi xoay dọc chữ trục X
-    df_eff_horizontal = pd.DataFrame({
-        'Before Optimization': [68, 6.2],
-        'After Optimization': [79, 7.3]
-    }, index=['Driver Utilization (%)', 'Active Trip Hours / Day'])
-    
-    # Sử dụng thuộc tính horizontal=True để ép biểu đồ nằm ngang cực đẹp
-    st.bar_chart(df_eff_horizontal, color=["#4A4A4A", "#00C4CC"], horizontal=True)
+
+    df_eff = pd.DataFrame({
+        "Metric": [
+            "Active Trip Hours / Day",
+            "Active Trip Hours / Day",
+            "Driver Utilization (%)",
+            "Driver Utilization (%)"
+        ],
+        "Status": [
+            "After Optimization",
+            "Before Optimization",
+            "After Optimization",
+            "Before Optimization"
+        ],
+        "Value": [
+            7.3,
+            6.2,
+            79,
+            68
+        ]
+    })
+
+    fig_eff = px.bar(
+        df_eff,
+        y="Metric",
+        x="Value",
+        color="Status",
+        orientation="h",
+        barmode="group",
+        color_discrete_map={
+            "Before Optimization": "#4A4A4A",
+            "After Optimization": "#00C4CC"
+        },
+        category_orders={
+            "Status": [
+                "After Optimization",
+                "Before Optimization"
+            ],
+            "Metric": [
+                "Driver Utilization (%)",
+                "Active Trip Hours / Day"
+            ]
+        }
+    )
+
+    fig_eff.update_layout(
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.30,
+            xanchor="center",
+            x=0.5
+        ),
+        margin=dict(
+            l=20,
+            r=20,
+            t=10,
+            b=50
+        ),
+        xaxis_title="Performance Metric Value",
+        yaxis_title=None,
+        bargap=0.55,
+        legend_title_text=""
+    )
+
+    fig_eff.update_traces(
+        width=0.16
+    )
+
+    st.plotly_chart(
+        fig_eff,
+        use_container_width=True
+    )
 
 st.markdown("---")
 
-# 🖼️ PHẦN 3: NỘI DUNG HÌNH ẢNH TRỰC QUAN (Thu nhỏ và Căn giữa sơ đồ Canva)
+# 🖼️ PHẦN 3: NỘI DUNG HÌNH ẢNH TRỰC QUAN (Căn giữa và thu nhỏ ảnh Canva vừa vặn)
 st.markdown('<div class="section-header">🏗️ System Architecture & Data Flow</div>', unsafe_allow_html=True)
 st.write("Our 6-layer decoupled framework built for real-time demand orchestration:")
 
-# Tạo 3 cột đệm để căn giữa ảnh với tỷ lệ 20% - 60% - 20% giúp thu nhỏ ảnh lại vừa mắt
 img_pad1, img_core, img_pad2 = st.columns([1, 3, 1])
 
 with img_core:
     try:
-        st.image("assets/architecture.png", caption="Balanceflow AI Multi-Layer System Architecture Overview", width=700)
+        # Giữ width=450 giúp sơ đồ gọn gàng, sắc nét
+        st.image("assets/architecture.png", caption="Balanceflow AI Multi-Layer System Architecture Overview", width=450)
     except:
         st.warning("⚠️ Architecture diagram image not found in 'assets/' directory. Please check file path.")
 
