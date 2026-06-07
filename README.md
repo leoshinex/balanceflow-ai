@@ -84,7 +84,7 @@ The underlying Machine Learning architecture processes telemetry data through a 
 ### 🛠️ How to Run Locally
 
 1. **Clone the repository:**
-<pre><code>git clone https://github.com/yourusername/balanceflow-ai.git
+<pre><code>git clone https://github.com/leoshinex/balanceflow-ai.git
 cd balanceflow-ai</code></pre>
 
 2. **Install dependencies:**
