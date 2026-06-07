@@ -77,7 +77,7 @@ The underlying Machine Learning architecture processes telemetry data through a 
 
 ## 📱 App Screenshots & Live Demo
 
-### 🚀 [Click Here to Launch the Live Streamlit Web App](https://share.streamlit.io/) 
+### 🚀 [Click Here to Launch the Live Streamlit Web App](https://balanceflow-ai.streamlit.app/) 
 
 *Note: If the live link is sleeping, you can spin it up locally following the steps below.*
 
