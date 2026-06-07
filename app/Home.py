@@ -22,7 +22,7 @@ st.markdown('<div class="main-title">🏙️ BALANCEFLOW AI</div>', unsafe_allow
 st.markdown('<div class="sub-title">The Demand Orchestration Layer for Sustainable Cities</div>', unsafe_allow_html=True)
 st.markdown("---")
 
-# 🛑 PHẦN 1: TỔNG QUAN VẤN ĐỀ (Theo góp ý của anh Grab)
+# 🛑 PHẦN 1: TỔNG QUAN VẤN ĐỀ
 st.markdown('<div class="section-header">🛑 Urban Challenge & Core Mission</div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="problem-box">
@@ -33,10 +33,10 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 📊 PHẦN 2: EXECUTIVE SUMMARY & CURRENT MONITOR (Giữ nguyên nội dung gốc của bồ + Bổ sung Chart DA)
+# 📊 PHẦN 2: EXECUTIVE SUMMARY & CURRENT MONITOR
 st.markdown('<div class="section-header">📈 Executive Summary: Live Status & System Impact</div>', unsafe_allow_html=True)
 
-# Hàng 1: Giữ nguyên trạng thái cảnh báo thực tế từ file cũ của bồ
+# Hàng 1: Trạng thái cảnh báo thực tế
 col_live1, col_live2 = st.columns(2)
 with col_live1:
     st.markdown("### 📊 Main KPI")
@@ -52,7 +52,7 @@ with col_live2:
 
 st.write("")
 
-# Hàng 2: Bổ sung 2 biểu đồ trực quan thể hiện rõ kết quả vai trò Data Analyst
+# Hàng 2: Biến đổi 2 biểu đồ trực quan thể hiện rõ kết quả vai trò Data Analyst
 chart_col1, chart_col2 = st.columns(2)
 
 with chart_col1:
@@ -69,28 +69,30 @@ with chart_col1:
     st.line_chart(df_risk, color=["#FF4B4B", "#2EA043"])
 
 with chart_col2:
-    st.subheader("🚖 Fleet Efficiency & Driver Optimization")
-    metrics_label = ['Driver Utilization (%)', 'Active Trip Hours / Day']
-    before_ai = [68, 6.2]
-    after_ai = [79, 7.3]
+    st.subheader("🚖 Fleet Efficiency Optimization (Impact)")
+    # Thay đổi cấu trúc DataFrame để vẽ biểu đồ ngang, tránh lỗi xoay dọc chữ trục X
+    df_eff_horizontal = pd.DataFrame({
+        'Before Optimization': [68, 6.2],
+        'After Optimization': [79, 7.3]
+    }, index=['Driver Utilization (%)', 'Active Trip Hours / Day'])
     
-    df_eff = pd.DataFrame({
-        'Metric': metrics_label,
-        'Before Optimization': before_ai,
-        'After Optimization': after_ai
-    }).set_index('Metric')
-    st.bar_chart(df_eff, color=["#4A4A4A", "#00C4CC"])
+    # Sử dụng thuộc tính horizontal=True để ép biểu đồ nằm ngang cực đẹp
+    st.bar_chart(df_eff_horizontal, color=["#4A4A4A", "#00C4CC"], horizontal=True)
 
 st.markdown("---")
 
-# 🖼️ PHẦN 3: NỘI DUNG HÌNH ẢNH TRỰC QUAN (Nhúng ảnh sơ đồ Canva)
+# 🖼️ PHẦN 3: NỘI DUNG HÌNH ẢNH TRỰC QUAN (Thu nhỏ và Căn giữa sơ đồ Canva)
 st.markdown('<div class="section-header">🏗️ System Architecture & Data Flow</div>', unsafe_allow_html=True)
 st.write("Our 6-layer decoupled framework built for real-time demand orchestration:")
 
-try:
-    st.image("assets/architecture.png", caption="Balanceflow AI Multi-Layer System Architecture Overview", use_column_width=True)
-except:
-    st.warning("⚠️ Architecture diagram image not found in 'assets/' directory. Please check file path.")
+# Tạo 3 cột đệm để căn giữa ảnh với tỷ lệ 20% - 60% - 20% giúp thu nhỏ ảnh lại vừa mắt
+img_pad1, img_core, img_pad2 = st.columns([1, 3, 1])
+
+with img_core:
+    try:
+        st.image("assets/architecture.png", caption="Balanceflow AI Multi-Layer System Architecture Overview", width=700)
+    except:
+        st.warning("⚠️ Architecture diagram image not found in 'assets/' directory. Please check file path.")
 
 st.write("")
 st.info("💡 Use the sidebar navigation on the left to explore detailed system modules, predictive engines, and simulators!")
